@@ -1,0 +1,12 @@
+# Netlify (migrado pro Vercel)
+.netlify/
+
+# Editor
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs e temporários
+*.log
+node_modules/
+.vercel/
