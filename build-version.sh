@@ -12,7 +12,7 @@ ENV_NAME="${VERCEL_ENV:-development}"
 PT_MONTHS=(jan fev mar abr mai jun jul ago set out nov dez)
 MONTH_NUM=$(TZ='America/Sao_Paulo' date +%-m)
 MONTH_NAME="${PT_MONTHS[$((MONTH_NUM - 1))]}"
-FRIENDLY=$(TZ='America/Sao_Paulo' date +"%-d/${MONTH_NAME} - %H:%M")
+FRIENDLY=$(TZ='America/Sao_Paulo' date +"%-d-${MONTH_NAME} %H:%M")
 
 DETAIL="${SHORT_SHA} | ${BRANCH} | ${ENV_NAME}"
 
