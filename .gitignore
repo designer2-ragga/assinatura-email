@@ -1,12 +1,18 @@
-# Netlify (migrado pro Vercel)
-.netlify/
-
-# Editor
+# Editor / IDE
 .vscode/
+.idea/
+*.swp
+
+# OS
 .DS_Store
 Thumbs.db
 
 # Logs e temporários
 *.log
 node_modules/
+
+# Vercel local
 .vercel/
+
+# Netlify (legado, migrado pro Vercel)
+.netlify/
