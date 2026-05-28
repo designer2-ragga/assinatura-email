@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
+# Injeta a versão amigável (data BRT em pt-BR) + detalhe técnico
+# (SHA · branch · env · timestamp UTC) nos arquivos HTML antes do deploy.
 set -e
+
 SHA="${VERCEL_GIT_COMMIT_SHA:-local}"
 SHORT_SHA="${SHA:0:7}"
 BRANCH="${VERCEL_GIT_COMMIT_REF:-local}"
 ENV_NAME="${VERCEL_ENV:-development}"
-BUILT_AT="$(date -u +%Y-%m-%d\ %H:%M)"
-VERSION="${SHORT_SHA} · ${BRANCH} · ${ENV_NAME} · ${BUILT_AT} UTC"
 
-echo "Injecting version: ${VERSION}"
-for f in index.html como-aplicar-no-gmail.html; do
-  if [ -f "$f" ]; then
-    sed -i "s|__VERSION__|${VERSION}|g" "$f"
-    echo "  ✓ $f"
-  fi
-done
+# Data amigável em BRT, formato pt-BR (ex.: "28/mai · 09:35")
+PT_MONTHS=(jan fev mar abr mai jun jul ago set out nov dez)
+MONTH_NUM=$(TZ='America/S

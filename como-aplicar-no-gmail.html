@@ -187,14 +187,17 @@
   @media (prefers-reduced-motion: reduce){
     .step, .step.is-active > *, .progress > i{animation:none !important;transition:none !important}
   }
-  /* Version footer */
+  /* Version footer — friendly date, debug detail on hover */
   .version-footer{
-    text-align:center;margin:8px 0 16px;padding:8px;
-    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    font-size:11px;color:var(--muted);opacity:0.55;
-    letter-spacing:0.02em;user-select:all;
+    text-align:center;margin:8px 0 20px;padding:8px;
+    font-size:12px;color:var(--muted);line-height:1.4;
   }
-  .version-footer:hover{opacity:1}
+  .version-footer .pill{
+    display:inline-block;padding:4px 10px;border-radius:999px;
+    background:rgba(0,0,0,0.04);cursor:default;
+    transition:background-color .15s ease;
+  }
+  .version-footer .pill:hover{background:rgba(0,0,0,0.07)}
 </style>
 </head>
 <body>
@@ -520,7 +523,7 @@ renderStep();
 </script>
 
 
-<footer class="version-footer" id="version-footer">__VERSION__</footer>
-<script>(function(){var el=document.getElementById('version-footer');var v=el.textContent;if(!v||v.indexOf('__')===0){el.textContent='local · dev (sem build do Vercel)';}else{el.textContent='v ' + v;}})();</script>
-</body>
-</html>
+<footer class="version-footer">
+  <span class="pill" id="version-pill" title="__VERSION_DETAIL__">Atualizado em __VERSION_FRIENDLY__</span>
+</footer>
+<script>(functio
