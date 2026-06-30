@@ -17,17 +17,17 @@
     --radius-inner:8px; /* [1] Concentric border radius: outer = inner + padding */
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
+  html,body{margin:0;padding:0;overflow-x:hidden}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
     background:var(--bg);
     color:var(--ink);
     line-height:1.5;
-    padding:24px 16px 64px;
-    -webkit-font-smoothing:antialiased; /* [3] Font smoothing */
+    padding:16px 12px 64px;
+    -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
-  .container{max-width:1180px;margin:0 auto}
+  .container{max-width:1180px;margin:0 auto;width:100%}
   @media (min-width:600px){
     body{padding:32px 24px 80px}
   }
@@ -70,6 +70,7 @@
     grid-template-columns: 1fr;
     gap:16px;
     align-items:start;
+    margin-top:16px;
   }
   @media (min-width:920px){ .layout{grid-template-columns:1fr 1fr;gap:24px} }
 
@@ -78,12 +79,12 @@
     background:var(--surface);
     border:none;
     border-radius:var(--radius);
-    padding:16px;
+    padding:14px;
+    overflow:hidden;
     box-shadow:
       0 0 0 1px rgba(0,0,0,0.04),
       0 1px 2px rgba(0,0,0,0.03),
       0 4px 16px rgba(0,0,0,0.04);
-    will-change:transform;
     animation:card-enter .5s cubic-bezier(.22,1,.36,1) both;
   }
   @media (min-width:600px){
@@ -107,40 +108,91 @@
   }
 
   /* form */
-  .field{margin-bottom:16px}
+  .field{margin-bottom:10px}
   .field label{
     display:block;
-    font-size:12px;
+    font-size:11px;
     font-weight:600;
     color:var(--ink-2);
-    margin-bottom:6px;
+    margin-bottom:3px;
+    letter-spacing:.02em;
   }
-  .field input, .field select{
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field select{
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    display:block;
     width:100%;
-    font-family:inherit;
-    font-size:14px;
-    padding:10px 12px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:13px;
+    line-height:1.4;
+    padding:7px 10px;
+    height:34px;
     border:1px solid var(--line);
-    border-radius:var(--radius-inner); /* [1] Concentric: inner radius */
+    border-radius:var(--radius-inner);
     background:#fff;
     color:var(--ink);
-    transition:border-color .15s ease, box-shadow .15s ease; /* [12] Specific transitions */
-    appearance:auto;
-    min-height:40px; /* [11] Min 40px hit area */
+    transition:border-color .15s ease, box-shadow .15s ease;
+    box-sizing:border-box;
+    margin:0;
   }
-  .field input:focus, .field select:focus{
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B6B68' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 10px center;
+    padding-right:26px;
+    cursor:pointer;
+  }
+  .field input[type="text"]:focus,
+  .field input[type="tel"]:focus,
+  .field select:focus{
     outline:none;
     border-color:var(--grupo);
-    box-shadow:0 0 0 3px rgba(45,27,78,0.1); /* [5] Focus ring as shadow */
+    box-shadow:0 0 0 3px rgba(45,27,78,0.1);
   }
+  @media (min-width:600px){
+    .field{margin-bottom:16px}
+    .field label{font-size:12px;margin-bottom:6px}
+    .field input[type="text"],
+    .field input[type="tel"],
+    .field select{font-size:14px;padding:10px 12px;height:auto}
+  }
+  #nome{ text-transform:none }
+  .sig .nome{ text-transform:none }
   .help{
-    font-size:12px;
+    font-size:11px;
     color:var(--muted);
-    margin-top:6px;
+    margin-top:4px;
     line-height:1.35;
-    text-wrap:pretty; /* [2] Pretty wrap for help text */
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+  }
+  @media (min-width:600px){
+    .help{
+      font-size:12px;
+      margin-top:6px;
+      overflow:visible;
+      display:block;
+      -webkit-line-clamp:unset;
+    }
   }
   .help strong{color:var(--ink-2);font-weight:600}
+  .caps-warn{
+    font-size:12px;
+    color:#92580A;
+    background:#FFF7E5;
+    border:1px solid #F0C060;
+    border-radius:6px;
+    padding:5px 10px;
+    margin-top:6px;
+    display:none;
+    font-weight:600;
+  }
 
   /* Vertical selector — symbol-only buttons */
   .verticals{
@@ -184,6 +236,11 @@
     color:#fff;
     border-color:var(--brand);
   }
+  /* Tooltip on hover */
+  /* Prevent any element from overflowing viewport */
+  *{ max-width:100%; box-sizing:border-box; }
+  img, svg, table{ max-width:100%; }
+
   /* Tooltip on hover */
   .v-btn[title]:hover::after{
     content: attr(title);
@@ -282,7 +339,7 @@
     padding: 16px;
     min-height: 160px;
     background: #fff;
-    overflow-x: auto;
+    overflow: hidden;
   }
   @media (min-width:600px){
     .gmail-body{padding:24px 20px;min-height:220px}
@@ -312,7 +369,8 @@
   .sig .nome{font-size:15px;font-weight:700;color:#1A1A1A;margin:0;line-height:1.35}
   .sig .accent{
     display:block;
-    width:600px;max-width:100%;
+    width:100%;
+    max-width:600px;
     height:2px;
     margin:6px 0 8px;
     background:var(--grupo);
@@ -320,12 +378,10 @@
   .sig .meta{font-size:13px;color:#444444;margin:0;line-height:1.45}
   .sig .tel{
     font-size:13px;color:#444444;margin:0;line-height:1.45;
-    font-variant-numeric:tabular-nums; /* [4] Tabular nums for phone number */
+    font-variant-numeric:tabular-nums;
   }
   .sig .banner{
-    display:block;margin-top:12px;width:600px;max-width:100%;height:auto;
-    outline:1px solid rgba(0,0,0,0.06); /* [8] Image outline for depth */
-    outline-offset:-1px;
+    display:block;margin-top:12px;width:100%;max-width:600px;height:auto;
   }
 
   .actions{
@@ -378,7 +434,7 @@
     to{opacity:1;transform:translateY(0)}
   }
 
-  /* Tutorial CTA — [10] Enter animation */
+  /* Tutorial CTA */
   .tutorial-cta{
     margin-top:20px;
     background:var(--grupo);
@@ -419,33 +475,32 @@
     background:#fff;
     color:var(--grupo);
     font-weight:700;
-    font-size:14px;
-    padding:12px 20px;
+    font-size:13px;
+    padding:10px 18px;
     border-radius:999px;
     text-decoration:none;
-    align-self:flex-start;
+    white-space:nowrap;
+    align-self:stretch;
+    justify-content:center;
     transition:transform .15s cubic-bezier(.22,1,.36,1), box-shadow .15s ease;
     will-change:transform;
-    min-height:44px;
+    min-height:40px;
   }
-  @media (min-width:600px){
-    .cta-btn{padding:14px 22px;gap:10px;align-self:auto}
+  @media (min-width:680px){
+    .cta-btn{font-size:14px;padding:14px 22px;gap:10px;align-self:auto;min-height:44px;justify-content:flex-start}
   }
-  .cta-btn:hover{
-    transform:translateX(4px);
-    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+  @media (hover:hover){
+    .cta-btn:hover{
+      transform:translateX(4px);
+      box-shadow:0 4px 12px rgba(0,0,0,0.12);
+    }
+    .cta-btn:hover span{ transform:translateX(3px); opacity:0.85; }
   }
-  .cta-btn:active{
-    transform:scale(0.96);
-  }
+  .cta-btn:active{ transform:scale(0.96); }
   .cta-btn span{
     font-size:16px;
     transition:transform .2s cubic-bezier(.22,1,.36,1), opacity .2s ease;
     display:inline-block;
-  }
-  .cta-btn:hover span{
-    transform:translateX(3px);
-    opacity:0.85;
   }
 
   /* [6] Optical alignment */
@@ -453,12 +508,36 @@
 
   /* [13] Reduced motion — respect user preference */
   @media (prefers-reduced-motion:reduce){
+    .card{
+      animation:none;
+      opacity:1;
+      transform:none;
+    }
     *, *::before, *::after{
       animation-duration:0.01ms !important;
       animation-iteration-count:1 !important;
       transition-duration:0.01ms !important;
     }
   }
+
+  /* Version footer — friendly date, debug detail on hover */
+  .version-footer{
+    text-align:center;
+    margin-top:32px;
+    padding:12px 8px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.4;
+  }
+  .version-footer .pill{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    background:rgba(0,0,0,0.04);
+    cursor:default;
+    transition:background-color .15s ease;
+  }
+  .version-footer .pill:hover{background:rgba(0,0,0,0.07)}
 </style>
 </head>
 <body>
@@ -473,8 +552,10 @@
   <p>Preencha seus dados, escolha sua vertical, copie e cole no Gmail.</p>
 </header>
     <section class="tutorial-cta" aria-labelledby="ttl-cta">
-      <h2 id="ttl-cta">Como aplicar a assinatura no Gmail</h2>
-      <p>Um passo a passo guiado, em 7 telas com imagens. Em menos de 1 minuto sua assinatura está ativa.</p>
+      <div class="cta-text">
+        <h2 id="ttl-cta">Como aplicar a assinatura no Gmail</h2>
+        <p>Um passo a passo guiado, em 7 telas com imagens. Em menos de 1 minuto sua assinatura está ativa.</p>
+      </div>
       <a class="cta-btn" href="como-aplicar-no-gmail.html">Começar passo a passo<span aria-hidden="true">→</span></a>
     </section>
 
@@ -487,12 +568,14 @@
     <div class="field">
       <label for="nome">Nome completo</label>
       <input id="nome" type="text" placeholder="Nome e sobrenome" autocomplete="name"/>
-      <div class="help">Use seu nome completo como será visto pelos destinatários. <strong>Evite CAIXA ALTA total e apelidos.</strong></div>
+      <div class="caps-warn" id="capsWarn" style="display:none">⇪ Caps Lock ativado</div>
+      <div class="help">Use seu nome como será visto pelos destinatários.</div>
     </div>
 
     <div class="field">
       <label for="cargo">Cargo</label>
       <input id="cargo" type="text" placeholder="Seu cargo" autocomplete="organization-title"/>
+      <div class="caps-warn" id="capsWarnCargo" style="display:none">⇪ Caps Lock ativado</div>
       <div class="help">Use o cargo oficial em português, com capitalização padrão (ex.: <em>Designer Sênior</em>, <em>Gerente de Marketing</em>). <strong>Não invente variações.</strong></div>
     </div>
 
@@ -651,9 +734,23 @@ $('tel').addEventListener('input', (e) => {
 $('depto').addEventListener('change', render);
 verticalSelect.addEventListener('change', render);
 
+// Caps Lock detection — genérico para todos os inputs de texto
+function setupCapsLock(inputId, warnId) {
+  const input = $(inputId);
+  const warn  = $(warnId);
+  input.addEventListener('keyup', (e) => {
+    warn.style.display = (e.getModifierState && e.getModifierState('CapsLock')) ? 'block' : 'none';
+  });
+  input.addEventListener('blur', () => { warn.style.display = 'none'; });
+}
+setupCapsLock('nome',  'capsWarn');
+setupCapsLock('cargo', 'capsWarnCargo');
+
 function render(){
-  const nome  = $('nome').value.trim() || 'Seu Nome';
-  const cargo = $('cargo').value.trim();
+  const nomeRaw = $('nome').value.trim();
+  const nome  = nomeRaw ? toTitleCase(nomeRaw) : 'Seu Nome';
+  const cargoRaw = $('cargo').value.trim();
+  const cargo = cargoRaw ? toTitleCase(cargoRaw) : '';
   const depto = $('depto').value.trim();
   const tel   = $('tel').value.trim();
   const v     = selectedVertical();
@@ -674,18 +771,36 @@ function render(){
   banner.alt = 'Ragga ' + v.label;
   banner.style.display = '';
   $('pAccent').style.background = v.color;
+
+  // Eagerly fetch the banner so click-to-copy can run synchronously (Safari/iOS).
+  preloadBanner(v.file);
 }
 
-// Build Gmail-safe HTML for clipboard
-async function fileToDataURL(url){
-  const r = await fetch(url);
-  const b = await r.blob();
-  return new Promise((res, rej) => {
-    const fr = new FileReader();
-    fr.onload = () => res(fr.result);
-    fr.onerror = rej;
-    fr.readAsDataURL(b);
-  });
+// ---------- Banner pre-cache (file → data URL) ----------
+// Critical for Safari/iOS: image bytes must be ready BEFORE the user clicks copy.
+// Safari rejects clipboard.write() when any awaited fetch sits between the user
+// gesture and the clipboard call. We solve it with eager pre-caching and a sync
+// path through the click handler, plus Promise<Blob> in ClipboardItem as fallback.
+const bannerCache = new Map();
+
+function fileToDataURL(url){
+  return fetch(url, { cache: 'force-cache' })
+    .then(r => r.blob())
+    .then(b => new Promise((res, rej) => {
+      const fr = new FileReader();
+      fr.onload = () => res(fr.result);
+      fr.onerror = rej;
+      fr.readAsDataURL(b);
+    }));
+}
+
+function preloadBanner(file){
+  if (!file) return Promise.resolve(null);
+  if (bannerCache.has(file)) return Promise.resolve(bannerCache.get(file));
+  const p = fileToDataURL(file)
+    .then(d => { bannerCache.set(file, d); return d; })
+    .catch(e => { console.warn('preload fail', e); return null; });
+  return p;
 }
 
 function escapeHTML(s){
@@ -694,9 +809,25 @@ function escapeHTML(s){
   })[ch]);
 }
 
-async function htmlForClipboard(){
-  const nome  = $('nome').value.trim();
-  const cargo = $('cargo').value.trim();
+const PT_LOWERCASE = new Set([
+  'de','da','do','das','dos',
+  'e','ou','em','na','no','nas','nos',
+  'para','por','com','sem','sob','entre',
+  'a','o','as','os','à','ao','às','aos',
+  'um','uma'
+]);
+function toTitleCase(str){
+  return str.trim().split(/\s+/).map((w, i) => {
+    const lower = w.toLowerCase();
+    if (i > 0 && PT_LOWERCASE.has(lower)) return lower;
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  }).join(' ');
+}
+
+// Build email-safe HTML synchronously given the image source.
+function buildEmailHTML(imgSrc){
+  const nome  = toTitleCase($('nome').value.trim());
+  const cargo = toTitleCase($('cargo').value.trim());
   const depto = $('depto').value.trim();
   const tel   = $('tel').value.trim();
   const v     = selectedVertical();
@@ -706,14 +837,10 @@ async function htmlForClipboard(){
   else if (cargo)     meta = cargo;
   else if (depto)     meta = depto;
 
-  // Inline the banner image as a data URL so it travels with the clipboard.
-  let imgSrc = v.file;
-  try { imgSrc = await fileToDataURL(v.file); } catch (e) { console.warn(e); }
-
-  const font = "Arial, Helvetica, sans-serif";
+  const font  = "Arial, Helvetica, sans-serif";
   const color = v.color;
+  const src   = imgSrc || v.file;
 
-  // Email-safe: nested tables, inline styles, explicit attributes. Width fixed 600px.
   const html = `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:${font};color:#333333;line-height:1.4;">
   <tr><td style="padding:0;font-family:${font};">
 
@@ -727,7 +854,7 @@ async function htmlForClipboard(){
     ${tel  ? `<div style="font-family:${font};font-size:13px;line-height:18px;color:#444444;margin:0;">${escapeHTML(tel)}</div>` : ''}
 
     <div style="margin-top:12px;line-height:0;font-size:0;">
-      <img src="${imgSrc}" alt="Ragga ${escapeHTML(v.label)}" width="600" style="display:block;width:600px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;"/>
+      <img src="${src}" alt="Ragga ${escapeHTML(v.label)}" width="600" style="display:block;width:600px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;"/>
     </div>
 
   </td></tr>
@@ -737,58 +864,126 @@ async function htmlForClipboard(){
   return { html, plain };
 }
 
-async function copyAsRichText(){
-  const { html, plain } = await htmlForClipboard();
+// ---------- Clipboard fallback (legacy/desktop Safari) ----------
+function execCommandCopyHTML(html){
+  const tmp = document.createElement('div');
+  tmp.contentEditable = 'true';
+  tmp.setAttribute('contenteditable', 'true');
+  tmp.style.position = 'fixed';
+  tmp.style.left = '0';
+  tmp.style.top = '0';
+  tmp.style.opacity = '0';
+  tmp.style.pointerEvents = 'none';
+  tmp.style.userSelect = 'all';
+  tmp.style.webkitUserSelect = 'all';
+  tmp.innerHTML = html;
+  document.body.appendChild(tmp);
+  const range = document.createRange();
+  range.selectNodeContents(tmp);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
   let ok = false;
-  if (navigator.clipboard && window.ClipboardItem) {
-    try {
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          'text/html': new Blob([html], { type: 'text/html' }),
-          'text/plain': new Blob([plain], { type: 'text/plain' })
-        })
-      ]);
-      ok = true;
-    } catch (e) { console.warn(e); }
-  }
-  if (!ok) {
-    const tmp = document.createElement('div');
-    tmp.contentEditable = 'true';
-    tmp.style.position='fixed'; tmp.style.left='-9999px';
-    tmp.innerHTML = html;
-    document.body.appendChild(tmp);
-    const range = document.createRange();
-    range.selectNodeContents(tmp);
-    const sel = window.getSelection();
-    sel.removeAllRanges(); sel.addRange(range);
-    try { ok = document.execCommand('copy'); } catch(_){}
-    sel.removeAllRanges();
-    document.body.removeChild(tmp);
-  }
-  showStatus(ok ? '✓ Assinatura copiada — cole no Gmail com Ctrl/Cmd + V' : 'Falha ao copiar. Tente novamente.');
+  try { ok = document.execCommand('copy'); } catch(_) { ok = false; }
+  sel.removeAllRanges();
+  document.body.removeChild(tmp);
+  return ok;
 }
 
-async function copyHTMLSource(){
-  const { html } = await htmlForClipboard();
-  try {
-    await navigator.clipboard.writeText(html);
-    showStatus('✓ HTML copiado (modo desenvolvedor)');
-  } catch (e) {
-    showStatus('Falha ao copiar HTML.');
+function copyAsRichText(){
+  const v = selectedVertical();
+  const cachedSrc = bannerCache.get(v.file);
+  const canUseClipboardItem = !!(navigator.clipboard && window.ClipboardItem);
+
+  if (canUseClipboardItem) {
+    try {
+      let item;
+      if (cachedSrc) {
+        // Cache hit: build HTML sync, wrap in Blob inside the click handler
+        const { html, plain } = buildEmailHTML(cachedSrc);
+        item = new ClipboardItem({
+          'text/html':  new Blob([html],  { type: 'text/html' }),
+          'text/plain': new Blob([plain], { type: 'text/plain' }),
+        });
+      } else {
+        // Safari supports Promise<Blob> in ClipboardItem — preserves user gesture
+        const htmlP  = preloadBanner(v.file).then(src => new Blob([buildEmailHTML(src).html],  { type: 'text/html' }));
+        const plainP = preloadBanner(v.file).then(src => new Blob([buildEmailHTML(src).plain], { type: 'text/plain' }));
+        item = new ClipboardItem({ 'text/html': htmlP, 'text/plain': plainP });
+      }
+      navigator.clipboard.write([item])
+        .then(() => showStatus('✓ Assinatura copiada — cole no Gmail com Ctrl/Cmd + V'))
+        .catch(err => { console.warn('clipboard.write failed:', err); tryLegacyCopy(v); });
+      return;
+    } catch (e) { console.warn('ClipboardItem failed:', e); }
   }
+  tryLegacyCopy(v);
+}
+
+function tryLegacyCopy(v){
+  const cachedSrc = bannerCache.get(v.file);
+  const { html } = buildEmailHTML(cachedSrc);
+  const ok = execCommandCopyHTML(html);
+  if (ok) {
+    showStatus('✓ Assinatura copiada — cole no Gmail com Ctrl/Cmd + V');
+  } else {
+    showStatus('Seu navegador bloqueou a cópia automática. No iPhone: pressione e segure o preview à direita, selecione "Copiar" e cole no Gmail.');
+  }
+}
+
+function copyHTMLSource(){
+  const v = selectedVertical();
+  const cachedSrc = bannerCache.get(v.file);
+  if (cachedSrc) {
+    const { html } = buildEmailHTML(cachedSrc);
+    navigator.clipboard.writeText(html)
+      .then(() => showStatus('✓ HTML copiado (modo desenvolvedor)'))
+      .catch(() => legacyCopyText(html));
+    return;
+  }
+  preloadBanner(v.file).then(src => {
+    const { html } = buildEmailHTML(src);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(html)
+        .then(() => showStatus('✓ HTML copiado (modo desenvolvedor)'))
+        .catch(() => legacyCopyText(html));
+    } else {
+      legacyCopyText(html);
+    }
+  });
+}
+
+function legacyCopyText(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '0'; ta.style.top = '0'; ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch(_){}
+  document.body.removeChild(ta);
+  showStatus(ok ? '✓ HTML copiado (modo desenvolvedor)' : 'Falha ao copiar HTML.');
 }
 
 function showStatus(msg){
   const el = $('copyStatus');
   el.textContent = msg;
   clearTimeout(showStatus._t);
-  showStatus._t = setTimeout(()=>{ el.textContent=''; }, 4000);
+  showStatus._t = setTimeout(()=>{ el.textContent=''; }, 5000);
 }
 
 $('btnCopy').addEventListener('click', copyAsRichText);
 $('btnCopyHtml').addEventListener('click', copyHTMLSource);
 
 render();
+// Preload all banners in the background so any vertical's copy is instant.
+VERTICALS.forEach(v => preloadBanner(v.file));
 </script>
+
+<footer class="version-footer">
+  <span class="pill" id="version-pill" title="__VERSION_DETAIL__">Atualizado em __VERSION_FRIENDLY__</span>
+</footer>
+<script>(function(){var el=document.getElementById('version-pill');var t=el.textContent;if(t.indexOf('__VERSION')!==-1){el.textContent='Versão local (sem deploy)';el.removeAttribute('title');}})();</script>
 </body>
 </html>
